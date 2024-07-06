@@ -5,49 +5,51 @@
 #include <string>
 using namespace std;
 
-class var {
-public:
-    int emp_id, sal, group_id;
-    string name, address;
-};
+class emp{
+    protected:
+        string name;
+        int emp_id, sal, group_id, attendance;
 
-class emp {
-public:
-    virtual void menu();
-    virtual void child_menu();
-    void insert();
-    void display();
-    void search();
-    void modify();
-    void del();
-    void group();
-    void search_group();
-    void show_group();
-    void check_attendance();
-    void search_attendance();
-    void salary_slip();
-};
+    
+    public:
+        virtual void login() ;
+        virtual  void menu();
+        void display();
+        void search();
+        void group();
+        void check_attendance();
+        void salary_slip();
+    };
 
-class child : public emp {
+
+class admin : public emp {
 public:
-    void login();
-    void main_menu();
-    void child_menu() override;
+    void login() override;
+    void menu() override;
     void attendance();
-} obj;
+    void del();
+    void modify();
+    void search_group();
+    void search_attendance();
+    void show_group();
+    void insert();
+
+    friend class emp;
+};
+
+
+
 
 void intro() {
-    system("clear");
-    cout << "\n\n\n\n\n\n\n";
-    cout << "\t\t\t................";
-    cout << "\n\t\t\t................";
-    cout << "\n\n\t\t\t Employee Management System";
-    
-    cout << "\n\n\t\t\t................";
-    cout << "\n\t\t\t................";
-    cout << "\n\nPress any key to continue...";
-    cin.ignore();
-    cin.get();
+    std::system("clear");
+    std::cout << "\n\n\n\n\n\n\n";
+    std::cout << "\t\t\t................";
+    std::cout << "\n\t\t\t................";
+    std::cout << "\n\n\t\t\t Employee Management System";
+    std::cout << "\n\n\t\t\t................";
+    std::cout << "\n\t\t\t................";
+    std::cout << "\n\nPress any key to continue...";
+    std::cin.get();
 }
 
 void disableEcho(bool enable = true) {
@@ -61,99 +63,136 @@ void disableEcho(bool enable = true) {
     tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 }
 
-void child::login() {
+void emp::login() {
     while (true) {
-        system("clear");
+        std::system("clear");
         string user, pass;
         int admin;
         char ch;
-        cout << "\n\n\n\n\n";
-        cout << "\t\t\t................";
-        cout << "\n\n\t\t\t login process";
-        cout << "\n\n\t\t\t................";
-        cout << "\n\n\n Enter User Name: ";
-        cin >> user;
-        cout << "\n\n Enter password: ";
-        fflush(stdin);
-        cin>>pass;
-        disableEcho(false);
-        cout << "\n Who are you ?"<< endl;
-        cout << "1. Admin "<< endl;
-        cout << "2. User" <<endl;
-        fflush(stdin);
-        cin >> admin;
+        std::cout << "\n\n\n\n\n";
+        std::cout << "\t\t\t................";
+        std::cout << "\n\n\t\t\t login process";
+        std::cout << "\n\n\t\t\t................";
+        std::cout << "\n\n\n Enter User Name: ";
+        std::cin >> user;
+        std::cout << "\n\n Enter password: ";
+        std::fflush(stdin);
+        std::cin>>pass;
+
 
         while ((ch = getchar()) != '\n') {
             pass.push_back(ch);
-            cout << '*';
+            std::cout << '*';
         }
         disableEcho(true);
 
-        if (user == "pudasainiaayushma@gmail.com" && pass == "AP") {
-            cout << "\n\n\n\t\t\t Congratulations, login successful...";
-            cout << "\n\n\n\t\t\t\t\t Loading";
+        if (user == "e" && pass == "e") {
+            std::cout << "\n\n\n\t\t\t Congratulations, login successful...";
+            std::cout << "\n\n\n\t\t\t\t\t Loading";
             sleep(1);
-            if(admin==1)
-                emp::menu();
-            else
-                child::menu();
+            emp::menu();
             break;
-        } else if (user != "pudasainiaayushma@gmail.com" && pass == "AP") {
-            cout << "\n\n\n Your user name is wrong...";
-            cin.ignore();
-            cin.get();
-        } else if (user == "pudasainiaayushma@gmail.com" && pass != "AP") {
-            cout << "\n\n\n Your password is wrong...";
-            cin.ignore();
-            cin.get();
+        } else if (user != "e" && pass == "e") {
+            std::cout << "\n\n\n Your user name is wrong...";
+            std::cin.ignore();
+            std::cin.get();
+        } else if (user == "e" && pass != "e") {
+            std::cout << "\n\n\n Your password is wrong...";
+            std::cin.ignore();
+            std::cin.get();
         } else {
-            cout << "\n\n\n Both user name and password are wrong...";
-            cin.ignore();
-            cin.get();
+            std::cout << "\n\n\n Both user name and password are wrong...";
+            std::cin.ignore();
+            std::cin.get();
         }
     }
 }
 
-void emp::menu() {
+
+void admin::login() {
     while (true) {
-        system("clear");
+        std::system("clear");
+        string user, pass;
+        int admin;
+        char ch;
+        std::cout << "\n\n\n\n\n";
+        std::cout << "\t\t\t................";
+        std::cout << "\n\n\t\t\t login process";
+        std::cout << "\n\n\t\t\t................";
+        std::cout << "\n\n\n Enter User Name: ";
+        std::cin >> user;
+        std::cout << "\n\n Enter password: ";
+        std::fflush(stdin);
+        std::cin>>pass;
+
+
+        while ((ch = getchar()) != '\n') {
+            pass.push_back(ch);
+            std::cout << '*';
+        }
+        disableEcho(true);
+
+        if (user == "a" && pass == "a") {
+            std::cout << "\n\n\n\t\t\t Congratulations, login successful...";
+            std::cout << "\n\n\n\t\t\t\t\t Loading";
+            sleep(1);
+            admin::menu();
+            break;
+        } else if (user != "a" && pass == "a") {
+            std::cout << "\n\n\n Your user name is wrong...";
+            std::cin.ignore();
+            std::cin.get();
+        } else if (user == "admin@gmail.com" && pass != "AP") {
+            std::cout << "\n\n\n Your password is wrong...";
+            std::cin.ignore();
+            std::cin.get();
+        } else {
+            std::cout << "\n\n\n Both user name and password are wrong...";
+            std::cin.ignore();
+            std::cin.get();
+        }
+    }
+}
+
+void admin::menu() {
+    while (true) {
+        std::system("clear");
         int x;
-        cout << "\n\n\t\t\t................";
-        cout << "\n\n\t\t\t Admin Control Panel";
-        cout << "\n\n\t\t\t................";
-        cout << "\n\n\n 1. Insert Record";
-        cout << "\n 2. Search Record";
-        cout << "\n 3. Modify Record";
-        cout << "\n 4. Delete Record";
-        cout << "\n 5. Display Record";
-        cout << "\n 6. Salary slip";
-        cout << "\n 7. Check Attendance";
-        cout << "\n 8. Search Attendance";
-        cout << "\n 9. Group Record";
-        cout << "\n 10. Show All Group";
-        cout << "\n 11. Go Back";
-        cout << "\n 12. Enter Your Choice: ";
-        cin >> x;
+        std::cout << "\n\n\t\t\t................";
+        std::cout << "\n\n\t\t\t Admin Control Panel";
+        std::cout << "\n\n\t\t\t................";
+        std::cout << "\n\n\n 1. Insert Record";
+        std::cout << "\n 2. Search Record";
+        std::cout << "\n 3. Modify Record";
+        std::cout << "\n 4. Delete Record";
+        std::cout << "\n 5. Display Record";
+        std::cout << "\n 6. Salary slip";
+        std::cout << "\n 7. Check Attendance";
+        std::cout << "\n 8. Search Attendance";
+        std::cout << "\n 9. Group Record";
+        std::cout << "\n 10. Show All Group";
+        std::cout << "\n 11. Go Back";
+        std::cout << "\n 12. Enter Your Choice: ";
+        std::cin >> x;
         switch (x) {
             case 1:
                 insert();
                 break;
             case 2:
-                obj.child_menu();
+                this->menu();
                 break;
             case 3:
                 exit(0);
             default:
-                cout << "\n\n Invalid value...Please Try Again...";
-                cin.ignore();
-                cin.get();
+                std::cout << "\n\n Invalid value...Please Try Again...";
+                std::cin.ignore();
+                std::cin.get();
         }
     }
 }
 
-void emp::child_menu() {}
 
-void child::child_menu() {
+void emp::menu() {
     while (true) {
         int choice;
         system("clear");
@@ -167,13 +206,13 @@ void child::child_menu() {
         cin >> choice;
         switch (choice) {
             case 1:
-                attendance();
+                emp::check_attendance();
                 break;
             case 2:
                 emp::search();
                 break;
             case 3:
-                main_menu();
+                menu();
             default:
                 cout << "\n\n Invalid Value...Please Try Again...";
                 cin.ignore();
@@ -182,7 +221,7 @@ void child::child_menu() {
     }
 }
 
-void emp::insert() {
+void admin::insert() {
     system("clear");
     fstream file;
     int emp_id, sal, group_id;
@@ -276,7 +315,7 @@ void emp::search() {
     cin.get();
 }
 
-void emp::modify() {
+void admin::modify() {
     system("clear");
     fstream file, file1;
     int emp_id, sal, group_id, rest_id, found = 0;
@@ -327,7 +366,7 @@ void emp::modify() {
     cin.get();
 }
 
-void emp::del() {
+void admin::del() {
     system("clear");
     fstream file, file1;
     int emp_id, sal, group_id, rest_id, found = 0;
@@ -375,13 +414,13 @@ void emp::group() {
     cin.get();
 }
 
-void emp::search_group() {
+void admin::search_group() {
     cout << "Search Group\n";
     cin.ignore();
     cin.get();
 }
 
-void emp::show_group() {
+void admin::show_group() {
     cout << "Show Group\n";
     cin.ignore();
     cin.get();
@@ -432,7 +471,7 @@ void emp::check_attendance() {
     cin.get();
 }
 
-void emp::search_attendance() {
+void admin::search_attendance() {
     system("clear");
     fstream file, file1;
     int emp_idd, d, m, y, a_date, a_month, a_year, t_id, count = 0;
@@ -484,20 +523,21 @@ void emp::salary_slip() {
     cin.get();
 }
 
-void child::main_menu() {
-    cout << "Main Menu\n";
-    cin.ignore();
-    cin.get();
-}
 
-void child::attendance() {
-    cout << "Attendance\n";
-    cin.ignore();
-    cin.get();
-}
 
 int main() {
     intro();
-    obj.login();
+    std::cout << " Who are you?? \n 1. Admin \n 2. Employee \n 3. Exit \n";
+    int choice;
+    std::cin >> choice;
+    if (choice == 1) {
+        admin obj;
+        obj.login();
+    } else if (choice == 2) {
+        emp obj;
+        obj.login();
+    } else {
+        exit(0);
+    }
     return 0;
 }
