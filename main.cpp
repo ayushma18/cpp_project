@@ -65,6 +65,7 @@ void child::login() {
     while (true) {
         system("clear");
         string user, pass;
+        int admin;
         char ch;
         cout << "\n\n\n\n\n";
         cout << "\t\t\t................";
@@ -76,6 +77,12 @@ void child::login() {
         fflush(stdin);
         cin>>pass;
         disableEcho(false);
+        cout << "\n Who are you ?"<< endl;
+        cout << "1. Admin "<< endl;
+        cout << "2. User" <<endl;
+        fflush(stdin);
+        cin >> admin;
+
         while ((ch = getchar()) != '\n') {
             pass.push_back(ch);
             cout << '*';
@@ -86,7 +93,10 @@ void child::login() {
             cout << "\n\n\n\t\t\t Congratulations, login successful...";
             cout << "\n\n\n\t\t\t\t\t Loading";
             sleep(1);
-            emp::menu();
+            if(admin==1)
+                emp::menu();
+            else
+                child::menu();
             break;
         } else if (user != "pudasainiaayushma@gmail.com" && pass == "AP") {
             cout << "\n\n\n Your user name is wrong...";
