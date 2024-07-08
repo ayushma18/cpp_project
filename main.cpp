@@ -1,4 +1,5 @@
 #include "headers/emp.h"
+#include "headers/crypto.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -24,11 +25,9 @@ int main() {
     std::cin >> choice;
     if (choice == 1) {
         admin obj;
-        obj.setFilename(filename);
         obj.login();
     } else if (choice == 2) {
         emp obj;
-        obj.setFilename(filename);
         obj.login();
     } else {
         exit(0);

@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include <string>
+#include "../headers/crypto.h"
 using namespace std;
 
 void disableEcho(bool enable = true) {
@@ -80,6 +81,8 @@ void admin::menu() {
         std::cout << "\n 10. Show All Group";
         std::cout << "\n 11. Go Back";
         std::cout << "\n 12. Enter Your Choice: ";
+        std::cout << "\n 13. Create Employee: ";
+
         std::cin >> x;
         switch (x) {
             case 1:
@@ -90,10 +93,33 @@ void admin::menu() {
                 break;
             case 3:
                 exit(0);
+            case 13:
+                this->create_emp();
+                exit(0);
             default:
                 std::cout << "\n\n Invalid value...Please Try Again...";
                 std::cin.ignore();
                 std::cin.get();
         }
     }
+}
+
+emp admin::create_emp() {
+    emp e;
+    std::cout << "\n\n Enter Employee Name: ";
+    std::cin >> e.name;
+    std::cout << "\n\n Enter Employee ID: ";
+    std::cin >> e.emp_id;
+    std::cout << "\n\n Enter Employee Salary: ";
+    std::cin >> e.sal;
+    std::cout << "\n\n Enter Employee Group ID: ";
+    std::cin >> e.group_id;
+    std::cout << "\n\n Enter Employee Attendance: ";
+    std::cin >> e.attendance;
+    RSA::PrivateKey privateKey;
+    RSA::PublicKey publicKey;
+    GenerateKeys(privateKey, publicKey,"key/"+to_string(e.emp_id)+"private.key","key/"+to_string(e.emp_id)+"public.key");
+    e.publicKey = publicKey;
+    e.writeToFile();
+    return e;
 }

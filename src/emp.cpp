@@ -6,9 +6,6 @@
 #include <string>
 using namespace std;
 
-// Initialize static members
-ofstream emp::offile;
-ifstream emp::iffile;
 
 void emp::login() {
     while (true) {
