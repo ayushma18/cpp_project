@@ -1,6 +1,6 @@
 # Define the compiler and compiler flags
 CXX = g++
-CXXFLAGS = -Wall -g
+CXXFLAGS = -std=c++17 -Wall -g
 LDFLAGS = -lcryptopp
 # Define the target executable
 TARGET = output

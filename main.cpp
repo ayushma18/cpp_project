@@ -27,8 +27,12 @@ int main() {
         admin obj;
         obj.login();
     } else if (choice == 2) {
-        emp obj;
-        obj.login();
+        emp obj ;
+        int id;
+        cout << "Enter your id: ";
+        cin >> id;
+        obj.set_id(id);
+        obj.menu();
     } else {
         exit(0);
     }

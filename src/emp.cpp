@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <termios.h>
 #include <string>
+#include <chrono>
+#include <ctime>
 using namespace std;
 
 void pressAnyKey() {
@@ -76,22 +78,54 @@ void emp::menu() {
         int choice;
         system("clear");
         cout << "\n\n\t\t\t................";
-        cout << "\n\n\t\t\t Child Control Panel";
+        cout << "\n\n\t\t\t Employee Control Panel";
         cout << "\n\n\t\t\t................";
-        cout << "\n\n 1. Attendance";
+        cout << "\n\n 1. View Attendance";
         cout << "\n\n 2. Check Details";
         cout << "\n\n 3. Go Back";
-        cout << "\n\n Enter Your Choice: ";
+        cout << "\n\n 4. Check In";
+        cout << "\n\n Enter Your Choice: " <<endl;
         cin >> choice;
         switch (choice) {
             case 1:
-                // emp::check_attendance();
+                cout << "Your attendance is " << attendance << endl;
+                cin.ignore();
+                cin.get();
                 break;
+
             case 2:
-                // emp::check_details();
+                emp::print_details();
+                cin.ignore();
+                cin.get();
                 break;
+
             case 3:
                 menu();
+                break;
+
+            case 4:
+            {
+                auto now = std::chrono::system_clock::now();
+                std::time_t current_time = std::chrono::system_clock::to_time_t(now);
+                struct std::tm* timeinfo = std::localtime(&current_time);
+                
+                // cout << "Current time is " << std::asctime(timeinfo);
+                // cout <<timeinfo->tm_hour << " " << timeinfo->tm_min << " " << timeinfo->tm_sec << endl;
+                // Check if current time is between 10:00 AM and 10:15 AM
+
+                if (timeinfo->tm_hour == 10 && timeinfo->tm_min >= 0 && timeinfo->tm_min <= 14) {
+                    attendance++;
+                    std::cout << "Attendance incremented. Current time is between 10:00 AM and 10:15 AM.\n";
+                } else {
+                    std::cout << "Attendance not incremented. Current time is not between 10:00 AM and 10:15 AM.\n";
+                }
+                std::cout << "Press any key to continue \n";
+                fflush(stdin);
+                cin.ignore();
+                cin.get();
+                break;
+            }
+
             default:
                 cout << "\n\n Invalid Value...Please Try Again...";
                 cin.ignore();

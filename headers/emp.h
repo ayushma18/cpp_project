@@ -25,7 +25,18 @@ class emp{
     public:
         void set_id(int id) {
             emp_id = id;
+            try
+            {
+                /* code */
+                this->readFromFile();
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+            
         }
+
         virtual void login() ;
         virtual emp insert(int id);
         virtual  void menu();
@@ -90,6 +101,7 @@ public:
     void show_group();
     void insert();
     emp create_emp();
+    void delete_emp(int id);
 
 };
 void disableEcho(bool enable);
