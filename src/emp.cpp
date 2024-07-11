@@ -6,6 +6,23 @@
 #include <string>
 using namespace std;
 
+void pressAnyKey() {
+    struct termios old_tio, new_tio;
+    
+    // Get the terminal settings for stdin
+    tcgetattr(STDIN_FILENO, &old_tio);
+    
+    // Set the new settings for stdin
+    new_tio = old_tio;
+    new_tio.c_lflag &= (~ICANON & ~ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &new_tio);
+    
+    // Wait for a key press
+    getchar();
+    
+    // Restore the old settings
+    tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
+}
 
 void emp::login() {
     while (true) {

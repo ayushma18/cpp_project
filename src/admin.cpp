@@ -66,6 +66,7 @@ void admin::menu() {
     while (true) {
         std::system("clear");
         int x;
+        std::string sr;
         std::cout << "\n\n\t\t\t................";
         std::cout << "\n\n\t\t\t Admin Control Panel";
         std::cout << "\n\n\t\t\t................";
@@ -83,20 +84,37 @@ void admin::menu() {
         std::cout << "\n 12. Enter Your Choice: ";
         std::cout << "\n 13. Create Employee: ";
 
-        std::cin >> x;
+        std::cin >> id;
         switch (x) {
-            case 1:
-                // insert();
+             case 1:
+                std::cout << "\n Enter id :";
+                std::cin >> id;
+                emp::insert(id);
                 break;
-            case 2:
-                this->menu();
+             case 2:
+                std::cout << "\n Enter id :";
+                std::cin >> id;
+            
+                emp::search_record(id);
+                std::cout << "\n\nPress any key to continue";
+                std::cin.get();
+                std::cin.get();
                 break;
-            case 3:
+                case 3:
+                std::cout << "\n Enter id :";
+                std::cin >> id;
+                emp::modify_record(id);
+                std::cout << "\n\nRecord modified successfully.";
+                std::cout << "\n\nPress any key to continue";
+                std::cin.get();
+                std::cin.get();
+                break;
+             case 4:
                 exit(0);
-            case 13:
+             case 5:
                 this->create_emp();
                 exit(0);
-            default:
+             default:
                 std::cout << "\n\n Invalid value...Please Try Again...";
                 std::cin.ignore();
                 std::cin.get();
@@ -116,10 +134,61 @@ emp admin::create_emp() {
     std::cin >> e.group_id;
     std::cout << "\n\n Enter Employee Attendance: ";
     std::cin >> e.attendance;
+    
     RSA::PrivateKey privateKey;
     RSA::PublicKey publicKey;
-    GenerateKeys(privateKey, publicKey,"key/"+to_string(e.emp_id)+"private.key","key/"+to_string(e.emp_id)+"public.key");
+    GenerateKeys(privateKey, publicKey, "key/" + to_string(e.emp_id) + "private.key", "key/" + to_string(e.emp_id) + "public.key");
     e.publicKey = publicKey;
+    e.writeToFile();
+    return e;
+}
+emp emp::search_record(int id)
+{
+    emp e1;
+    e1.set_id(id);
+    e1.readFromFile();
+    e1.print_details();
+    return e1;
+}
+
+emp emp::insert(int id)
+{
+   
+    {
+     emp e;
+     e.emp_id = id;
+     std::cout << "\n\n Enter Employee Name: ";
+     std::cin >> e.name;
+     std::cout << "\n\n Enter Employee Salary: ";
+     std::cin >> e.sal;
+     std::cout << "\n\n Enter Employee Group ID: ";
+     std::cin >> e.group_id;
+     std::cout << "\n\n Enter Employee Attendance: ";
+     std::cin >> e.attendance;
+
+     RSA::PrivateKey privateKey;
+     RSA::PublicKey publicKey;
+     GenerateKeys(privateKey, publicKey, "key/" + to_string(e.emp_id) + "private.key", "key/" + to_string(e.emp_id) + "public.key");
+     e.publicKey = publicKey;
+     e.writeToFile();
+     return e;
+    }
+}
+emp emp::modify_record(int id) {
+    emp e;
+    e.set_id(id);
+    e.readFromFile();
+
+    std::cout << "\n\n Modify Employee Record";
+    std::cout << "\n\n Enter New Employee Name (current: " << e.name << "): ";
+    std::cin >> e.name;
+    std::cout << "\n\n Enter New Employee Salary (current: " << e.sal << "): ";
+    std::cin >> e.sal;
+    std::cout << "\n\n Enter New Employee Group ID (current: " << e.group_id << "): ";
+    std::cin >> e.group_id;
+    std::cout << "\n\n Enter New Employee Attendance (current: " << e.attendance << "): ";
+    std::cin >> e.attendance;
+
     e.writeToFile();
     return e;
 }

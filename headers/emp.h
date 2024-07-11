@@ -11,6 +11,8 @@
 using namespace std;
 using namespace CryptoPP;
 
+void pressAnyKey(); 
+
 class emp{
     protected:
         string name;
@@ -25,18 +27,21 @@ class emp{
             emp_id = id;
         }
         virtual void login() ;
+        virtual emp insert(int id);
         virtual  void menu();
         void check_attendance();
         void check_details();
+        emp search_record(int id);
 
 
     void writeToFile() const {
-
+        RSA::PublicKey publickey;
+        LoadPublicKey("key/"+to_string(this->emp_id)+"public.key", publickey);
         // Serialize data
         string serializedData = to_string(emp_id) + ' ' + name + ' ' + to_string(sal) + ' ' + to_string(group_id) + ' ' + to_string(attendance);
 
         // Encrypt serialized data
-        string encryptedData = RSAEncryptString(publicKey, serializedData);
+        string encryptedData = RSAEncryptString(publickey, serializedData);
 
         // Save encrypted data to file
         ofstream file("data/"+to_string(this->emp_id)+ ".txt", ios::binary);
