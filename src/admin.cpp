@@ -84,10 +84,10 @@ void admin::menu() {
         std::cout << "\n\n\t\t\t................";
         std::cout << "\n\n\t\t\t Admin Control Panel";
         std::cout << "\n\n\t\t\t................";
-        std::cout << "\n\n\n 1. Insert Record";
+        std::cout << "\n\n\n 1. Edit Record";
         std::cout << "\n 2. Search Record";
         std::cout << "\n 3. Delete Employee";
-        std::cout << "\n 4. Display Record (Each)";
+        std::cout<<"\n 4. Edit Attendance";
         std::cout << "\n 5. Display Record (All)";
         std::cout << "\n 6. Create Employee: ";
 
@@ -115,15 +115,18 @@ void admin::menu() {
                 break;
 
             case 4:
+            {
                 std::cout << "\n Enter id :";
                 std::cin >> id;
                 this->set_id(id);
-                this->print_details();
+                cout << "Enter new attendance " <<endl;
+                cin >> this->attendance;
+                this->writeToFile();
                 cout << "Press any button to continue";
                 std::cin.ignore();
                 std::cin.get();
                 break;
-
+            }
              case 5:
 
                 try {
