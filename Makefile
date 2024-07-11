@@ -30,6 +30,7 @@ clean:
 	rm -f $(TARGET)
 	rm -f src/*.o
 	rm -f src/*.gch
+	rm -f  *.out
 
 cdata:
 	rm -rf data.txt
