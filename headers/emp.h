@@ -1,4 +1,9 @@
+
+#ifndef EMP_H
+#define EMP_H
 #pragma once
+#include <vector>
+#include <string>
 #include <sstream>
 #include <string>
 #include <iostream>
@@ -10,13 +15,13 @@
 #include "crypto.h"
 using namespace std;
 using namespace CryptoPP;
-
 void pressAnyKey(); 
 
 class emp{
     protected:
         string name;
         int emp_id, sal, group_id, attendance;
+        std::vector<int> dailyAttendance; // Vector to store daily attendance
         ofstream offile;
         ifstream iffile;
         RSA::PublicKey publicKey;
@@ -42,7 +47,13 @@ class emp{
         virtual  void menu();
         void check_attendance();
         void check_details();
+        void check_in();
         emp search_record(int id);
+        void view_monthly_attendance(int month);
+        void view_yearly_attendance();
+        void view_monthly_salary(int month);
+        void view_yearly_salary();
+        void disableEcho(bool enable);
 
 
     void writeToFile() const {
@@ -86,6 +97,11 @@ class emp{
             cout << "Salary: " << sal << endl;
             cout << "Group ID: " << group_id << endl;
             cout << "Attendance: " << attendance << endl;
+            cout << "monthly_attendance(int month): "<<endl;
+            cout << "yearly_attendance: "<<endl;
+            cout << "monthly_salary(int month): "<<endl;
+            cout << "yearly_salary: "<<endl;
+           
         }
         friend class admin;
     };
@@ -100,8 +116,13 @@ public:
     void search_attendance();
     void show_group();
     void insert();
+    void view_monthly_attendance(int month);
+    void view_yearly_attendance();
+    void view_monthly_salary(int month);
+    void view_yearly_salary();
     emp create_emp();
     void delete_emp(int id);
 
 };
 void disableEcho(bool enable);
+#endif 

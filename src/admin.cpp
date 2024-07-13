@@ -215,7 +215,6 @@ emp emp::insert(int id)
      return e;
     }
 }
-
 void admin::delete_emp(int id) {
     std::string filename = "data/" + to_string(id) + ".txt";
     std::string publick = "key/"+to_string(id) +"public"+".key";

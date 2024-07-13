@@ -6,22 +6,23 @@
 #include <string>
 #include <chrono>
 #include <ctime>
-using namespace std;
+#include <vector>
 
+using namespace std;
 void pressAnyKey() {
     struct termios old_tio, new_tio;
-    
+
     // Get the terminal settings for stdin
     tcgetattr(STDIN_FILENO, &old_tio);
-    
+
     // Set the new settings for stdin
     new_tio = old_tio;
     new_tio.c_lflag &= (~ICANON & ~ECHO);
     tcsetattr(STDIN_FILENO, TCSANOW, &new_tio);
-    
+
     // Wait for a key press
     getchar();
-    
+
     // Restore the old settings
     tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
 }
@@ -39,8 +40,7 @@ void emp::login() {
         std::cin >> user;
         std::cout << "\n\n Enter password: ";
         std::fflush(stdin);
-        std::cin>>pass;
-
+        std::cin >> pass;
 
         while ((ch = getchar()) != '\n') {
             pass.push_back(ch);
@@ -70,9 +70,6 @@ void emp::login() {
     }
 }
 
-
-
-
 void emp::menu() {
     while (true) {
         int choice;
@@ -84,7 +81,11 @@ void emp::menu() {
         cout << "\n\n 2. Check Details";
         cout << "\n\n 3. Go Back";
         cout << "\n\n 4. Check In";
-        cout << "\n\n Enter Your Choice: " <<endl;
+        cout << "\n\n 5. View Monthly Attendance";
+        cout << "\n\n 6. View Monthly Salary";
+        cout << "\n\n 7. View Yearly Attendance";
+        cout << "\n\n 8. View Yearly Salary";
+        cout << "\n\n Enter Your Choice: " << endl;
         cin >> choice;
         switch (choice) {
             case 1:
@@ -100,31 +101,40 @@ void emp::menu() {
                 break;
 
             case 3:
-                menu();
-                break;
+                return;
 
             case 4:
-            {
-                auto now = std::chrono::system_clock::now();
-                std::time_t current_time = std::chrono::system_clock::to_time_t(now);
-                struct std::tm* timeinfo = std::localtime(&current_time);
-                
-                // cout << "Current time is " << std::asctime(timeinfo);
-                // cout <<timeinfo->tm_hour << " " << timeinfo->tm_min << " " << timeinfo->tm_sec << endl;
-                // Check if current time is between 10:00 AM and 10:15 AM
+                emp::check_in();
+                break;
 
-                if (timeinfo->tm_hour == 10 && timeinfo->tm_min >= 0 && timeinfo->tm_min <= 14) {
-                    attendance++;
-                    std::cout << "Attendance incremented. Current time is between 10:00 AM and 10:15 AM.\n";
-                } else {
-                    std::cout << "Attendance not incremented. Current time is not between 10:00 AM and 10:15 AM.\n";
-                }
-                std::cout << "Press any key to continue \n";
-                fflush(stdin);
+            case 5:
+                int month;
+                cout << "Enter month (1-12): ";
+                cin >> month;
+                emp::view_monthly_attendance(month);
                 cin.ignore();
                 cin.get();
                 break;
-            }
+
+            case 6:
+                cout << "Enter month (1-12): ";
+                cin >> month;
+                emp::view_monthly_salary(month);
+                cin.ignore();
+                cin.get();
+                break;
+
+            case 7:
+                emp::view_yearly_attendance();
+                cin.ignore();
+                cin.get();
+                break;
+
+            case 8:
+                emp::view_yearly_salary();
+                cin.ignore();
+                cin.get();
+                break;
 
             default:
                 cout << "\n\n Invalid Value...Please Try Again...";
@@ -132,6 +142,92 @@ void emp::menu() {
                 cin.get();
         }
     }
+}
+
+void emp::check_in() {
+    auto now = std::chrono::system_clock::now();
+    std::time_t current_time = std::chrono::system_clock::to_time_t(now);
+    struct std::tm* timeinfo = std::localtime(&current_time);
+
+    if (timeinfo->tm_hour == 10 && timeinfo->tm_min >= 0 && timeinfo->tm_min <= 14) {
+        attendance++;
+        dailyAttendance.push_back(1);
+        std::cout << "Attendance incremented. Current time is between 10:00 AM and 10:15 AM.\n";
+    } else if (timeinfo->tm_hour >= 17) {
+        attendance++;
+        dailyAttendance.push_back(1);
+        std::cout << "Attendance incremented. Current time is after 5:00 PM.\n";
+    } else {
+        dailyAttendance.push_back(0);
+        std::cout << "Attendance not incremented. Current time is not between 10:00 AM and 10:15 AM or after 5:00 PM.\n";
+    }
+    std::cout << "Press any key to continue \n";
+    fflush(stdin);
+    cin.ignore();
+    cin.get();
+}
+
+void emp::view_monthly_attendance(int month) {
+    int monthly_attendance = 0;
+    // Assuming each month has 30 days for simplicity
+    int start = (month - 1) * 30;
+    int end = start + 30;
+
+    for (int i = start; i < end && i < static_cast<int>(dailyAttendance.size()); i++) {
+        monthly_attendance += dailyAttendance[i];
+    }
+
+    cout << "Your monthly attendance for month " << month << " is: " << monthly_attendance << endl;
+}
+
+void emp::view_yearly_attendance() {
+    int yearly_attendance = 0;
+
+    for (int i = 0; i < static_cast<int>(dailyAttendance.size()); i++) {
+        yearly_attendance += dailyAttendance[i];
+    }
+
+    cout << "Your yearly attendance is: " << yearly_attendance << endl;
+}
+
+void emp::view_monthly_salary(int month) {
+    const int salary_per_day = 100;
+    int monthly_attendance = 0;
+    // Assuming each month has 30 days for simplicity
+    int start = (month - 1) * 30;
+    int end = start + 30;
+
+    for (int i = start; i < end && i < static_cast<int>(dailyAttendance.size()); i++) {
+        monthly_attendance += dailyAttendance[i];
+    }
+
+    int monthly_salary = monthly_attendance * salary_per_day;
+
+    cout << "Your monthly salary for month " << month << " is: $" << monthly_salary << endl;
+}
+
+void emp::view_yearly_salary() {
+    const int salary_per_day = 100;
+    int yearly_attendance = 0;
+
+    for (int i = 0; i < static_cast<int>(dailyAttendance.size()); i++) {
+        yearly_attendance += dailyAttendance[i];
+    }
+
+    int yearly_salary = yearly_attendance * salary_per_day;
+
+    cout << "Your yearly salary is: $" << yearly_salary << endl;
+}
+
+void emp::disableEcho(bool enable) {
+    struct termios tty;
+    tcgetattr(STDIN_FILENO, &tty);
+    if (!enable)
+        tty.c_lflag &= ~ECHO;
+    else
+        tty.c_lflag |= ECHO;
+
+    (void)tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 }
 
 
