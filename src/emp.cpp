@@ -91,7 +91,7 @@ void emp::menu() {
         cin >> choice;
         switch (choice) {
             case 1:
-                cout << "Your attendance is " << serializeAttendance(attendance) << endl;
+                view_attendance();
                 cin.ignore();
                 cin.get();
                 break;

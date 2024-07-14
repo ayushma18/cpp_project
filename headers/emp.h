@@ -86,15 +86,35 @@ class emp{
 
             return attendance;
         }
-        // void test()
-        // {
-        //     cout << "this just for testing" <<endl;
-        //     attendance[5][6]=0;
-        //     cout << attendance[5][6]<<endl;
-        //     cout << "Size of vector: " << attendance.size() << endl;
-        //     cout << "Size of vector: " << attendance[0].size() << endl;
 
-        // }
+        void view_attendance() {
+        static const std::string monthNames[] = {
+            "January", "February", "March", "April", "May", "June", 
+            "July", "August", "September", "October", "November", "December"
+        };
+
+        for (int month = 1; month <= 12; ++month) {
+            // Adjust for 0-based index
+            size_t monthIndex = static_cast<size_t>(month - 1);
+
+            // Check if there is attendance data for the given month
+            if (monthIndex >= attendance.size() || attendance[monthIndex].empty()) {
+                std::cout << monthNames[monthIndex] << ": No attendance data available." << std::endl;
+                continue;
+            }
+
+            // Calculate the total attendance for the specified month
+            size_t presentCount = 0;
+            for (size_t day = 0; day < attendance[monthIndex].size(); ++day) {
+                if (attendance[monthIndex][day]) {
+                    presentCount++;
+                }
+            }
+
+            // Display attendance for the specified month
+            std::cout << monthNames[monthIndex] << ": " << presentCount << std::endl;
+        }
+    }
 
 
 
