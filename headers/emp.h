@@ -160,16 +160,14 @@ class emp{
             cout << "Employee ID: " << emp_id << endl;
             cout << "Salary: " << sal << endl;
             cout << "Group ID: " << group_id << endl;
-            cout << "Attendance: " << serializeAttendance(attendance) << endl;
-            cout << "monthly_attendance(int month): "<<endl;
-            cout << "yearly_attendance: "<<endl;
-            cout << "monthly_salary(int month): "<<endl;
-            cout << "yearly_salary: "<<endl;
+            cout << "Attendance : \n" << endl;
+            view_attendance();
            
         }
          void changeAttendance() {
             size_t month, day;
             char newAttendance;
+            fflush(stdin);
             std::cout << "Enter the month (0-11): ";
             std::cin >> month;
             std::cout << "Enter the day (0-30): ";

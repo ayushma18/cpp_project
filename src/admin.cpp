@@ -172,7 +172,6 @@ emp admin::create_emp() {
     std::cin >> e.sal;
     std::cout << "\n\n Enter Employee Group ID: ";
     std::cin >> e.group_id;
-    e.changeAttendance();
     RSA::PrivateKey privateKey;
     RSA::PublicKey publicKey;
     GenerateKeys(privateKey, publicKey, "key/" + to_string(e.emp_id) + "private.key", "key/" + to_string(e.emp_id) + "public.key",4096);
@@ -195,6 +194,8 @@ emp emp::insert(int id)
     {
      emp e;
      e.emp_id = id;
+     cout << "Current Details \n" << endl;
+     e.print_details();
      std::cout << "\n\n Enter Employee Name: ";
      std::cin >> e.name;
      std::cout << "\n\n Enter Employee Salary: ";
