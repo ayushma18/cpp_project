@@ -27,7 +27,7 @@ int main() {
         admin obj;
         obj.login();
     } else if (choice == 2) {
-        emp obj ;
+        emp obj;
         int id;
         cout << "Enter your id: ";
         cin >> id;

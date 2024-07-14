@@ -85,11 +85,13 @@ void emp::menu() {
         cout << "\n\n 6. View Monthly Salary";
         cout << "\n\n 7. View Yearly Attendance";
         cout << "\n\n 8. View Yearly Salary";
+        cout << "\n\n 9. Check Out";
+
         cout << "\n\n Enter Your Choice: " << endl;
         cin >> choice;
         switch (choice) {
             case 1:
-                cout << "Your attendance is " << attendance << endl;
+                cout << "Your attendance is " << serializeAttendance(attendance) << endl;
                 cin.ignore();
                 cin.get();
                 break;
@@ -119,7 +121,7 @@ void emp::menu() {
             case 6:
                 cout << "Enter month (1-12): ";
                 cin >> month;
-                emp::view_monthly_salary(month);
+                // emp::view_monthly_salary(month);
                 cin.ignore();
                 cin.get();
                 break;
@@ -131,7 +133,13 @@ void emp::menu() {
                 break;
 
             case 8:
-                emp::view_yearly_salary();
+                // emp::view_yearly_salary();
+                cin.ignore();
+                cin.get();
+                break;
+            
+            case 9:
+                emp::check_out();
                 cin.ignore();
                 cin.get();
                 break;
@@ -148,76 +156,153 @@ void emp::check_in() {
     auto now = std::chrono::system_clock::now();
     std::time_t current_time = std::chrono::system_clock::to_time_t(now);
     struct std::tm* timeinfo = std::localtime(&current_time);
+    //actual
+    // if (timeinfo->tm_hour == 10 && timeinfo->tm_min >= 0 && timeinfo->tm_min <= 14) {
+    //     in_office = true;
+    //     std::cout << "Checked In. Current time is between 10:00 AM and 10:15 AM.\n";
+    // } else {
+    //     std::cout << "Not Checked In. Current time is not between 10:00 AM and 10:15 AM or after 5:00 PM.\n";
+    // }
 
-    if (timeinfo->tm_hour == 10 && timeinfo->tm_min >= 0 && timeinfo->tm_min <= 14) {
-        attendance++;
-        dailyAttendance.push_back(1);
-        std::cout << "Attendance incremented. Current time is between 10:00 AM and 10:15 AM.\n";
-    } else if (timeinfo->tm_hour >= 17) {
-        attendance++;
-        dailyAttendance.push_back(1);
-        std::cout << "Attendance incremented. Current time is after 5:00 PM.\n";
+    //for testing
+    if (timeinfo->tm_hour < 13 ) {
+        in_office = true;
+        writeToFile();
+        std::cout << "Checked In. Current time is between 10:00 AM and 10:15 AM.\n";
     } else {
-        dailyAttendance.push_back(0);
-        std::cout << "Attendance not incremented. Current time is not between 10:00 AM and 10:15 AM or after 5:00 PM.\n";
+        std::cout << "Not Checked In. Current time is not between 10:00 AM and 10:15 AM or after 5:00 PM.\n";
     }
     std::cout << "Press any key to continue \n";
     fflush(stdin);
-    cin.ignore();
-    cin.get();
+    std::cin.ignore();
+    std::cin.get();
+}
+
+
+void emp::check_out() {
+    auto now = std::chrono::system_clock::now();
+    std::time_t current_time = std::chrono::system_clock::to_time_t(now);
+    struct std::tm* timeinfo = std::localtime(&current_time);
+    //actual
+    // if (timeinfo->tm_hour > 17 && in_office==true) {
+    //     in_office = false;
+    //      std::time_t t = std::time(nullptr);
+
+    //     // Convert it to local time
+    //     std::tm* localTime = std::localtime(&t);
+
+    //     // Extract month and day
+    //     int month = localTime->tm_mon + 1; // tm_mon is 0-based, so add 1
+    //     int day = localTime->tm_mday;
+    //     this->attendance[month - 1][day - 1] = true;
+    //     std::cout << "Attendance Recorded.\n";
+    // } else {
+    //     std::cout << "Attendance Not Recorded\n";
+    // }
+
+    //for testing
+    if (timeinfo->tm_hour > 10 && in_office==true) {
+
+        in_office = false;
+         std::time_t t = std::time(nullptr);
+
+        // Convert it to local time
+        std::tm* localTime = std::localtime(&t);
+        cout << "testtt" <<endl;
+        // Extract month and day
+        int month = localTime->tm_mon + 1; // tm_mon is 0-based, so add 1
+        int day = localTime->tm_mday;
+        cout << month << day <<endl;
+        cout << attendance.size() << attendance[0].size()<<endl;
+        attendance[month-1][day-1] = 1;
+        std::cout << "Attendance Recorded.\n";
+        writeToFile();
+    } else {
+        std::cout << "Attendance Not Recorded\n";
+    }
+    std::cout << "Press any key to continue \n";
+    fflush(stdin);
+    std::cin.ignore();
+    std::cin.get();
 }
 
 void emp::view_monthly_attendance(int month) {
-    int monthly_attendance = 0;
-    // Assuming each month has 30 days for simplicity
-    int start = (month - 1) * 30;
-    int end = start + 30;
-
-    for (int i = start; i < end && i < static_cast<int>(dailyAttendance.size()); i++) {
-        monthly_attendance += dailyAttendance[i];
+// Check if the month is within the valid range
+    if (month < 1 || month > 12) {
+        std::cout << "Invalid month. Please enter a month between 1 and 12." << std::endl;
+        return;
     }
 
-    cout << "Your monthly attendance for month " << month << " is: " << monthly_attendance << endl;
+    // Adjust for 0-based index
+    month -= 1;
+    size_t monthSize = static_cast<size_t>(month);
+    // Check if there is attendance data for the given month
+    if (monthSize >= attendance.size() || attendance[monthSize].empty()) {
+        std::cout << "No attendance data available for month " << month + 1 << "." << std::endl;
+        return;
+    }
+
+    // Display attendance for the specified month
+    std::cout << "Attendance for month " << month + 1 << ":" << std::endl;
+    for (size_t day = 0; day < attendance[month].size(); ++day) {
+        std::cout << "Day " << day + 1 << ": " << (attendance[month][day] ? "Present" : "Absent") << std::endl;
+    }
 }
 
 void emp::view_yearly_attendance() {
-    int yearly_attendance = 0;
-
-    for (int i = 0; i < static_cast<int>(dailyAttendance.size()); i++) {
-        yearly_attendance += dailyAttendance[i];
+    // Check if there is attendance data
+    if (attendance.empty()) {
+        std::cout << "No attendance data available for the year." << std::endl;
+        return;
     }
 
-    cout << "Your yearly attendance is: " << yearly_attendance << endl;
-}
+    // Define month names for better readability
+    const std::vector<std::string> monthNames = {
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    };
 
-void emp::view_monthly_salary(int month) {
-    const int salary_per_day = 100;
-    int monthly_attendance = 0;
-    // Assuming each month has 30 days for simplicity
-    int start = (month - 1) * 30;
-    int end = start + 30;
-
-    for (int i = start; i < end && i < static_cast<int>(dailyAttendance.size()); i++) {
-        monthly_attendance += dailyAttendance[i];
+    // Display attendance for each month
+    for (size_t month = 0; month < attendance.size(); ++month) {
+        if (!attendance[month].empty()) {
+            std::cout << "Attendance for " << monthNames[month] << ":" << std::endl;
+            for (size_t day = 0; day < attendance[month].size(); ++day) {
+                std::cout << "  Day " << day + 1 << ": " << (attendance[month][day] ? "Present" : "Absent") << std::endl;
+            }
+        } else {
+            std::cout << "No attendance data available for " << monthNames[month] << "." << std::endl;
+        }
     }
-
-    int monthly_salary = monthly_attendance * salary_per_day;
-
-    cout << "Your monthly salary for month " << month << " is: $" << monthly_salary << endl;
 }
 
-void emp::view_yearly_salary() {
-    const int salary_per_day = 100;
-    int yearly_attendance = 0;
+// void emp::view_monthly_salary(int month) {
+//     const int salary_per_day = 100;
+//     int monthly_attendance = 0;
+//     // Assuming each month has 30 days for simplicity
+//     int start = (month - 1) * 30;
+//     int end = start + 30;
 
-    for (int i = 0; i < static_cast<int>(dailyAttendance.size()); i++) {
-        yearly_attendance += dailyAttendance[i];
-    }
+//     for (int i = start; i < end && i < static_cast<int>(dailyAttendance.size()); i++) {
+//         monthly_attendance += dailyAttendance[i];
+//     }
 
-    int yearly_salary = yearly_attendance * salary_per_day;
+//     int monthly_salary = monthly_attendance * salary_per_day;
 
-    cout << "Your yearly salary is: $" << yearly_salary << endl;
-}
+//     cout << "Your monthly salary for month " << month << " is: $" << monthly_salary << endl;
+// }
+
+// void emp::view_yearly_salary() {
+//     const int salary_per_day = 100;
+//     int yearly_attendance = 0;
+
+//     for (int i = 0; i < static_cast<int>(dailyAttendance.size()); i++) {
+//         yearly_attendance += dailyAttendance[i];
+//     }
+
+//     int yearly_salary = yearly_attendance * salary_per_day;
+
+//     cout << "Your yearly salary is: $" << yearly_salary << endl;
+// }
 
 void emp::disableEcho(bool enable) {
     struct termios tty;

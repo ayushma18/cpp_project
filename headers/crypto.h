@@ -13,7 +13,7 @@ void Load(const string& filename, BufferedTransformation& bt);
 void LoadKey(const string& filename, RSA::PublicKey& key);
 void LoadPublicKey(const string& filename, RSA::PublicKey& key);
 void LoadPrivateKey(const string& filename, RSA::PrivateKey& key);
-void GenerateKeys(RSA::PrivateKey& privateKey, RSA::PublicKey& publicKey, const string& privateKeyFile, const string& publicKeyFile, int keySize = 3072);
+void GenerateKeys(RSA::PrivateKey& privateKey, RSA::PublicKey& publicKey, const string& privateKeyFile, const string& publicKeyFile, int keySize = 4096);
 string RSAEncryptString(const RSA::PublicKey& publicKey, const string& message);
 string RSADecryptString(const RSA::PrivateKey& privateKey, const string& cipher);
 

@@ -119,8 +119,7 @@ void admin::menu() {
                 std::cout << "\n Enter id :";
                 std::cin >> id;
                 this->set_id(id);
-                cout << "Enter new attendance " <<endl;
-                cin >> this->attendance;
+                this->changeAttendance();
                 this->writeToFile();
                 cout << "Press any button to continue";
                 std::cin.ignore();
@@ -173,12 +172,10 @@ emp admin::create_emp() {
     std::cin >> e.sal;
     std::cout << "\n\n Enter Employee Group ID: ";
     std::cin >> e.group_id;
-    std::cout << "\n\n Enter Employee Attendance: ";
-    std::cin >> e.attendance;
-    
+    e.changeAttendance();
     RSA::PrivateKey privateKey;
     RSA::PublicKey publicKey;
-    GenerateKeys(privateKey, publicKey, "key/" + to_string(e.emp_id) + "private.key", "key/" + to_string(e.emp_id) + "public.key");
+    GenerateKeys(privateKey, publicKey, "key/" + to_string(e.emp_id) + "private.key", "key/" + to_string(e.emp_id) + "public.key",4096);
     e.publicKey = publicKey;
     e.writeToFile();
     return e;
@@ -204,8 +201,9 @@ emp emp::insert(int id)
      std::cin >> e.sal;
      std::cout << "\n\n Enter Employee Group ID: ";
      std::cin >> e.group_id;
-     std::cout << "\n\n Enter Employee Attendance: ";
-     std::cin >> e.attendance;
+     // change attendance
+    //  std::cout << "\n\n Enter Employee Attendance: ";
+    //  std::cin >> e.attendance;
 
      RSA::PrivateKey privateKey;
      RSA::PublicKey publicKey;
