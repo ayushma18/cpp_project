@@ -121,7 +121,7 @@ void emp::menu() {
             case 6:
                 cout << "Enter month (1-12): ";
                 cin >> month;
-                // emp::view_monthly_salary(month);
+                emp::view_monthly_salary(month);
                 cin.ignore();
                 cin.get();
                 break;
@@ -133,7 +133,7 @@ void emp::menu() {
                 break;
 
             case 8:
-                // emp::view_yearly_salary();
+                emp::view_yearly_salary();
                 cin.ignore();
                 cin.get();
                 break;
@@ -275,34 +275,75 @@ void emp::view_yearly_attendance() {
     }
 }
 
-// void emp::view_monthly_salary(int month) {
-//     const int salary_per_day = 100;
-//     int monthly_attendance = 0;
-//     // Assuming each month has 30 days for simplicity
-//     int start = (month - 1) * 30;
-//     int end = start + 30;
+void emp::view_monthly_salary(int month) {
+        static const std::string monthNames[] = {
+            "January", "February", "March", "April", "May", "June", 
+            "July", "August", "September", "October", "November", "December"
+        };
 
-//     for (int i = start; i < end && i < static_cast<int>(dailyAttendance.size()); i++) {
-//         monthly_attendance += dailyAttendance[i];
-//     }
+        // Check if the month is within the valid range
+        if (month < 1 || month > 12) {
+            std::cout << "Invalid month. Please enter a month between 1 and 12." << std::endl;
+            return;
+        }
 
-//     int monthly_salary = monthly_attendance * salary_per_day;
+        // Adjust for 0-based index
+        size_t monthIndex = static_cast<size_t>(month - 1);
 
-//     cout << "Your monthly salary for month " << month << " is: $" << monthly_salary << endl;
-// }
+        // Check if there is attendance data for the given month
+        if (monthIndex >= attendance.size() || attendance[monthIndex].empty()) {
+            std::cout << monthNames[monthIndex] << ": No attendance data available." << std::endl;
+            return;
+        }
 
-// void emp::view_yearly_salary() {
-//     const int salary_per_day = 100;
-//     int yearly_attendance = 0;
+        // Calculate the total number of present days for the specified month
+        size_t presentDays = 0;
+        for (size_t day = 0; day < attendance[monthIndex].size(); ++day) {
+            if (attendance[monthIndex][day]) {
+                presentDays++;
+            }
+        }
 
-//     for (int i = 0; i < static_cast<int>(dailyAttendance.size()); i++) {
-//         yearly_attendance += dailyAttendance[i];
-//     }
+        // Calculate the salary for the specified month based on present days
+        double monthlySalary = presentDays * sal;
 
-//     int yearly_salary = yearly_attendance * salary_per_day;
+        // Display salary for the specified month
+        std::cout << "Salary for " << monthNames[monthIndex] << ": $" << monthlySalary << std::endl;
+    }
 
-//     cout << "Your yearly salary is: $" << yearly_salary << endl;
-// }
+    void emp::view_yearly_salary() {
+        static const std::string monthNames[] = {
+            "January", "February", "March", "April", "May", "June", 
+            "July", "August", "September", "October", "November", "December"
+        };
+
+        std::cout << "Yearly Salary Breakdown:" << std::endl;
+
+        for (int month = 1; month <= 12; ++month) {
+            // Adjust for 0-based index
+            size_t monthIndex = static_cast<size_t>(month - 1);
+
+            // Check if there is attendance data for the given month
+            if (monthIndex >= attendance.size() || attendance[monthIndex].empty()) {
+                std::cout << monthNames[monthIndex] << ": No attendance data available." << std::endl;
+                continue;
+            }
+
+            // Calculate the total number of present days for the specified month
+            size_t presentDays = 0;
+            for (size_t day = 0; day < attendance[monthIndex].size(); ++day) {
+                if (attendance[monthIndex][day]) {
+                    presentDays++;
+                }
+            }
+
+            // Calculate the salary for the specified month based on present days
+            double monthlySalary = presentDays * sal;
+
+            // Display salary for the specified month
+            std::cout << monthNames[monthIndex] << ": $" << monthlySalary << std::endl;
+        }
+    }
 
 void emp::disableEcho(bool enable) {
     struct termios tty;
