@@ -147,22 +147,22 @@ class emp{
             cout << "yearly_salary: "<<endl;
            
         }
-    void changeAttendance() {
-    int month, day;
-    char newAttendance;
-    std::cout << "Enter the month (0-11): ";
-    std::cin >> month;
-    std::cout << "Enter the day (0-30): ";
-    std::cin >> day;
-    std::cout << "Enter new attendance (1 for present, 0 for absent): ";
-    std::cin >> newAttendance;
+         void changeAttendance() {
+            size_t month, day;
+            char newAttendance;
+            std::cout << "Enter the month (0-11): ";
+            std::cin >> month;
+            std::cout << "Enter the day (0-30): ";
+            std::cin >> day;
+            std::cout << "Enter new attendance (1 for present, 0 for absent): ";
+            std::cin >> newAttendance;
 
-    if (month >= 0 && month < attendance.size() && day >= 0 && day < attendance[month].size()) {
-        attendance[month][day] = (newAttendance == '1');
-    } else {
-        std::cout << "Invalid input. Please enter valid month and day." << std::endl;
-    }
-}
+            if (month < attendance.size() && day < attendance[month].size()) {
+                attendance[month][day] = (newAttendance == '1');
+            } else {
+                std::cout << "Invalid input. Please enter valid month and day." << std::endl;
+            }
+        }
         friend class admin;
     };
 

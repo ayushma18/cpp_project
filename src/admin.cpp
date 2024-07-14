@@ -201,10 +201,7 @@ emp emp::insert(int id)
      std::cin >> e.sal;
      std::cout << "\n\n Enter Employee Group ID: ";
      std::cin >> e.group_id;
-     // change attendance
-    //  std::cout << "\n\n Enter Employee Attendance: ";
-    //  std::cin >> e.attendance;
-
+     e.changeAttendance();
      RSA::PrivateKey privateKey;
      RSA::PublicKey publicKey;
      GenerateKeys(privateKey, publicKey, "key/" + to_string(e.emp_id) + "private.key", "key/" + to_string(e.emp_id) + "public.key");
