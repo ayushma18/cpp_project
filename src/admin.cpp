@@ -9,9 +9,9 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-
 // Function to extract numbers from a filename
-int extractNumberFromFilename(const std::string& filename) {
+int extractNumberFromFilename(const std::string &filename)
+{
     std::string numberStr = filename;
     // Remove the file extension (assuming ".txt" or similar)
     numberStr.erase(numberStr.find_last_of("."), std::string::npos);
@@ -19,20 +19,27 @@ int extractNumberFromFilename(const std::string& filename) {
     return std::stoi(numberStr);
 }
 
-void disableEcho(bool enable = true) {
+void disableEcho(bool enable = true)
+{
     struct termios tty;
     tcgetattr(STDIN_FILENO, &tty);
-    if (enable) {
+    if (enable)
+    {
         tty.c_lflag |= ECHO;
-    } else {
+    }
+    else
+    {
         tty.c_lflag &= ~ECHO;
     }
     tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 }
 
-void admin::login(){
-    while (true) {
+void admin::login()
+{
+    while (true)
+    {
         std::system("clear");
+        disableEcho(false);
         string user, pass;
         char ch;
         std::cout << "\n\n\n\n\n";
@@ -43,30 +50,37 @@ void admin::login(){
         std::cin >> user;
         std::cout << "\n\n Enter password: ";
         std::fflush(stdin);
-        std::cin>>pass;
+        std::cin >> pass;
 
-
-        while ((ch = getchar()) != '\n') {
+        while ((ch = getchar()) != '\n')
+        {
             pass.push_back(ch);
             std::cout << '*';
         }
         disableEcho(true);
 
-        if (user == "a" && pass == "a") {
+        if (user == "a" && pass == "a")
+        {
             std::cout << "\n\n\n\t\t\t Congratulations, login successful...";
             std::cout << "\n\n\n\t\t\t\t\t Loading";
             sleep(1);
             admin::menu();
             break;
-        } else if (user != "a" && pass == "a") {
+        }
+        else if (user != "a" && pass == "a")
+        {
             std::cout << "\n\n\n Your user name is wrong...";
             std::cin.ignore();
             std::cin.get();
-        } else if (user == "admin@gmail.com" && pass != "AP") {
+        }
+        else if (user == "admin@gmail.com" && pass != "AP")
+        {
             std::cout << "\n\n\n Your password is wrong...";
             std::cin.ignore();
             std::cin.get();
-        } else {
+        }
+        else
+        {
             std::cout << "\n\n\n Both user name and password are wrong...";
             std::cin.ignore();
             std::cin.get();
@@ -74,10 +88,12 @@ void admin::login(){
     }
 }
 
-void admin::menu() {
-    while (true) {
+void admin::menu()
+{
+    while (true)
+    {
         std::system("clear");
-        int x,id;
+        int x, id;
         std::string sr;
         std::string pathh = "data";
 
@@ -87,82 +103,93 @@ void admin::menu() {
         std::cout << "\n\n\n 1. Edit Record";
         std::cout << "\n 2. Search Record";
         std::cout << "\n 3. Delete Employee";
-        std::cout<<"\n 4. Edit Attendance";
+        std::cout << "\n 4. Edit Attendance";
         std::cout << "\n 5. Display Record (All)";
         std::cout << "\n 6. Create Employee: ";
 
         std::cout << "\n Enter Your Choice: ";
         std::cin >> x;
-        switch (x) {
-             case 1:
-                std::cout << "\n Enter id :";
-                std::cin >> id;
-                emp::insert(id);
-                break;
-             case 2:
-                std::cout << "\n Enter id :";
-                std::cin >> id;
-            
-                emp::search_record(id);
-                std::cout << "\n\nPress any key to continue";
-                std::cin.get();
-                std::cin.get();
-                break;
-            case 3:
-                std::cout << "\n Enter id :";
-                std::cin >> id;
-                admin::delete_emp(id);
-                break;
+        switch (x)
+        {
+        case 1:
+            std::cout << "\n Enter id :";
+            std::cin >> id;
+            admin::modify_emp(id);
+            break;
+        case 2:
+            std::cout << "\n Enter id :";
+            std::cin >> id;
 
-            case 4:
+            emp::search_record(id);
+            std::cout << "\n\nPress any key to continue";
+            std::cin.get();
+            std::cin.get();
+            break;
+        case 3:
+            std::cout << "\n Enter id :";
+            std::cin >> id;
+            admin::delete_emp(id);
+            break;
+
+        case 4:
+        {
+            std::cout << "\n Enter id :";
+            std::cin >> id;
+            this->set_id(id);
+            this->changeAttendance();
+            this->writeToFile();
+            cout << "Press any button to continue";
+            std::cin.ignore();
+            std::cin.get();
+            break;
+        }
+        case 5:
+
+            try
             {
-                std::cout << "\n Enter id :";
-                std::cin >> id;
-                this->set_id(id);
-                this->changeAttendance();
-                this->writeToFile();
-                cout << "Press any button to continue";
-                std::cin.ignore();
-                std::cin.get();
-                break;
-            }
-             case 5:
-
-                try {
-                    for (const auto& entry : fs::directory_iterator(pathh)) {
-                        if (fs::is_regular_file(entry.status())) {
-                            std::string filename = entry.path().filename().string();
-                            if (filename.size() > 4 && filename.substr(filename.size() - 4) == ".txt") {
-                                int number = extractNumberFromFilename(filename);
-                                this->set_id(number);
-                                this->print_details();
-                                cout << "\n" <<endl;
-                            }
+                for (const auto &entry : fs::directory_iterator(pathh))
+                {
+                    if (fs::is_regular_file(entry.status()))
+                    {
+                        std::string filename = entry.path().filename().string();
+                        if (filename.size() > 4 && filename.substr(filename.size() - 4) == ".txt")
+                        {
+                            int number = extractNumberFromFilename(filename);
+                            this->set_id(number);
+                            this->print_details();
+                            cout << "\n"
+                                 << endl;
                         }
                     }
-                } catch (const fs::filesystem_error& e) {
-                    std::cerr << "Filesystem error: " << e.what() << '\n';
-                } catch (const std::exception& e) {
-                    std::cerr << "General error: " << e.what() << '\n';
                 }
-                cout << "Press any button to continue";
-                std::cin.ignore();
-                std::cin.get();
-                break;
+            }
+            catch (const fs::filesystem_error &e)
+            {
+                std::cerr << "Filesystem error: " << e.what() << '\n';
+            }
+            catch (const std::exception &e)
+            {
+                std::cerr << "General error: " << e.what() << '\n';
+            }
+            cout << "Press any button to continue";
+            std::cin.ignore();
+            std::cin.get();
+            break;
 
-             case 6:
-                this->create_emp();
-                break;
+        case 6:
+            this->create_emp();
+            break;
 
-             default:
-                std::cout << "\n\n Invalid value...Please Try Again...";
-                std::cin.ignore();
-                std::cin.get();
+        default:
+            std::cout << "\n\n Invalid value...Please Try Again...";
+            std::cin.ignore();
+            std::cin.get();
         }
     }
 }
 
-emp admin::create_emp() {
+emp admin::create_emp()
+{
     emp e;
     std::cout << "\n\n Enter Employee Name: ";
     std::cin >> e.name;
@@ -174,7 +201,7 @@ emp admin::create_emp() {
     std::cin >> e.group_id;
     RSA::PrivateKey privateKey;
     RSA::PublicKey publicKey;
-    GenerateKeys(privateKey, publicKey, "key/" + to_string(e.emp_id) + "private.key", "key/" + to_string(e.emp_id) + "public.key",4096);
+    GenerateKeys(privateKey, publicKey, "key/" + to_string(e.emp_id) + "private.key", "key/" + to_string(e.emp_id) + "public.key", 4096);
     e.publicKey = publicKey;
     e.writeToFile();
     return e;
@@ -190,36 +217,72 @@ emp emp::search_record(int id)
 
 emp emp::insert(int id)
 {
-   
+
     {
-     emp e;
-     e.emp_id = id;
-     cout << "Current Details \n" << endl;
-     e.print_details();
-     std::cout << "\n\n Enter Employee Name: ";
-     std::cin >> e.name;
-     std::cout << "\n\n Enter Employee Salary: ";
-     std::cin >> e.sal;
-     std::cout << "\n\n Enter Employee Group ID: ";
-     std::cin >> e.group_id;
-     e.changeAttendance();
-     RSA::PrivateKey privateKey;
-     RSA::PublicKey publicKey;
-     GenerateKeys(privateKey, publicKey, "key/" + to_string(e.emp_id) + "private.key", "key/" + to_string(e.emp_id) + "public.key");
-     e.publicKey = publicKey;
-     e.writeToFile();
-     return e;
+        emp e;
+        e.emp_id = id;
+        cout << "Current Details \n"
+             << endl;
+        e.print_details();
+        std::cout << "\n\n Enter Employee Name: ";
+        std::cin >> e.name;
+        std::cout << "\n\n Enter Employee Salary: ";
+        std::cin >> e.sal;
+        std::cout << "\n\n Enter Employee Group ID: ";
+        std::cin >> e.group_id;
+        e.changeAttendance();
+        RSA::PrivateKey privateKey;
+        RSA::PublicKey publicKey;
+        GenerateKeys(privateKey, publicKey, "key/" + to_string(e.emp_id) + "private.key", "key/" + to_string(e.emp_id) + "public.key");
+        e.publicKey = publicKey;
+        e.writeToFile();
+        return e;
     }
 }
-void admin::delete_emp(int id) {
+void admin::delete_emp(int id)
+{
     std::string filename = "data/" + to_string(id) + ".txt";
-    std::string publick = "key/"+to_string(id) +"public"+".key";
-    std::string privatek = "key/"+to_string(id) +"private"+".key";
+    std::string publick = "key/" + to_string(id) + "public" + ".key";
+    std::string privatek = "key/" + to_string(id) + "private" + ".key";
 
-
-    if (remove(filename.c_str()) != 0 || remove(publick.c_str()) != 0 || remove(privatek.c_str()) != 0) {
+    if (remove(filename.c_str()) != 0 || remove(publick.c_str()) != 0 || remove(privatek.c_str()) != 0)
+    {
         std::cout << "Error deleting file";
-    } else {
+    }
+    else
+    {
         std::cout << "File successfully deleted";
     }
+}
+
+void admin::modify_emp(int id)
+{
+    emp e;
+    e.set_id(id);
+    e.readFromFile();
+    e.print_details();
+    std::string name;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "\n\n Enter Employee Name (Press Enter to skip): ";
+    std::getline(std::cin, name);
+    if (!name.empty())
+    {
+        e.name = name;
+    }
+    std::cout << "\n\n Enter Employee Salary (Press Enter to skip): ";
+    std::string salaryInput;
+    std::getline(std::cin, salaryInput);
+    if (!salaryInput.empty())
+    {
+        e.sal = std::stoi(salaryInput);
+    }
+    std::cout << "\n\n Enter Employee Group ID (Press Enter to skip): ";
+    std::string groupIdInput;
+    std::getline(std::cin, groupIdInput);
+    if (!groupIdInput.empty())
+    {
+        e.group_id = std::stoi(groupIdInput);
+    }
+    e.writeToFile();
+    std::cout << "\n\n Record Updated...";
 }

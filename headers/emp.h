@@ -211,16 +211,7 @@ class admin : public emp
 public:
     void login() override;
     void menu() override;
-    void del();
-    void modify();
-    void search_group();
-    void search_attendance();
-    void show_group();
-    void insert();
-    void view_monthly_attendance(int month);
-    void view_yearly_attendance();
-    void view_monthly_salary(int month);
-    void view_yearly_salary();
+    void modify_emp(int id);
     emp create_emp();
     void delete_emp(int id);
 };
