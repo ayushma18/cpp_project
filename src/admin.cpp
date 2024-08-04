@@ -223,22 +223,3 @@ void admin::delete_emp(int id) {
         std::cout << "File successfully deleted";
     }
 }
-
-// emp emp::modify_record(int id) {
-//     emp e;
-//     e.set_id(id);
-//     e.readFromFile();
-
-//     std::cout << "\n\n Modify Employee Record";
-//     std::cout << "\n\n Enter New Employee Name (current: " << e.name << "): ";
-//     std::cin >> e.name;
-//     std::cout << "\n\n Enter New Employee Salary (current: " << e.sal << "): ";
-//     std::cin >> e.sal;
-//     std::cout << "\n\n Enter New Employee Group ID (current: " << e.group_id << "): ";
-//     std::cin >> e.group_id;
-//     std::cout << "\n\n Enter New Employee Attendance (current: " << e.attendance << "): ";
-//     std::cin >> e.attendance;
-
-//     e.writeToFile();
-//     return e;
-// }

@@ -79,13 +79,13 @@ void emp::menu() {
         cout << "\n\n\t\t\t................";
         cout << "\n\n 1. View Attendance";
         cout << "\n\n 2. Check Details";
-        cout << "\n\n 3. Go Back";
-        cout << "\n\n 4. Check In";
+        cout << "\n\n 3. Check In";
+        cout << "\n\n 4. Check Out";
         cout << "\n\n 5. View Monthly Attendance";
-        cout << "\n\n 6. View Monthly Salary";
-        cout << "\n\n 7. View Yearly Attendance";
+        cout << "\n\n 6. View Yearly Attendance";
+        cout << "\n\n 7. View Monthly Salary";
         cout << "\n\n 8. View Yearly Salary";
-        cout << "\n\n 9. Check Out";
+        cout << "\n\n 9. Go Back";
 
         cout << "\n\n Enter Your Choice: " << endl;
         cin >> choice;
@@ -102,10 +102,9 @@ void emp::menu() {
                 cin.get();
                 break;
 
-            case 3:
-                return;
+            
 
-            case 4:
+            case 3:
                 emp::check_in();
                 break;
 
@@ -118,7 +117,7 @@ void emp::menu() {
                 cin.get();
                 break;
 
-            case 6:
+            case 7:
                 cout << "Enter month (1-12): ";
                 cin >> month;
                 emp::view_monthly_salary(month);
@@ -126,7 +125,7 @@ void emp::menu() {
                 cin.get();
                 break;
 
-            case 7:
+            case 6:
                 emp::view_yearly_attendance();
                 cin.ignore();
                 cin.get();
@@ -138,11 +137,13 @@ void emp::menu() {
                 cin.get();
                 break;
             
-            case 9:
+            case 4:
                 emp::check_out();
                 cin.ignore();
                 cin.get();
                 break;
+            case 9 :
+            
 
             default:
                 cout << "\n\n Invalid Value...Please Try Again...";
@@ -164,14 +165,7 @@ void emp::check_in() {
         std::cout << "Not Checked In. Current time is not between 10:00 AM and 10:15 AM or after 5:00 PM.\n";
     }
 
-    //for testing
-    // if (timeinfo->tm_hour < 13 ) {
-    //     in_office = true;
-    //     writeToFile();
-    //     std::cout << "Checked In. Current time is between 10:00 AM and 10:15 AM.\n";
-    // } else {
-    //     std::cout << "Not Checked In. Current time is not between 10:00 AM and 10:15 AM or after 5:00 PM.\n";
-    // }
+    
 
 
     std::cout << "Press any key to continue \n";
@@ -312,7 +306,7 @@ void emp::view_monthly_salary(int month) {
         double monthlySalary = presentDays * sal;
 
         // Display salary for the specified month
-        std::cout << "Salary for " << monthNames[monthIndex] << ": $" << monthlySalary << std::endl;
+        std::cout << "Salary for " << monthNames[monthIndex] << ": Rs." << monthlySalary << std::endl;
     }
 
     void emp::view_yearly_salary() {
@@ -345,7 +339,7 @@ void emp::view_monthly_salary(int month) {
             double monthlySalary = presentDays * sal;
 
             // Display salary for the specified month
-            std::cout << monthNames[monthIndex] << ": $" << monthlySalary << std::endl;
+            std::cout << monthNames[monthIndex] << ": Rs." << monthlySalary << std::endl;
         }
     }
 
@@ -359,360 +353,3 @@ void emp::disableEcho(bool enable) {
 
     (void)tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 }
-
-
-
-
-
-// void emp::check_attendance() {
-//     system("clear");
-//     fstream file, file1;
-//     int d, m, y, a_date, a_month, a_year, t_id, emp_id, sal, group_id, count = 0;
-//     string name, address;
-    
-//     cout << "\n\n\t\tCheck Employee Attendance";
-//     file.open("emp.txt", ios::in);
-//     file1.open("attendance.txt", ios::in);
-    
-//     if (!file || !file1) {
-//         cout << "\n\n File Opening Error...";
-//         cin.ignore();
-//         cin.get();
-//         return;
-//     }
-    
-//     cout << "\n\n Date: ";
-//     cin >> d;
-//     cout << "\n Month: ";
-//     cin >> m;
-//     cout << "\n Year: ";
-//     cin >> y;
-    
-//     file1.close();
-//     system("clear");
-//     cout << "\n\n\t\tCheck Employee Attendance";
-//     cout << "\n\n Employee ID\tPresent\tAbsents";
-    
-//     while (file >> emp_id >> name >> sal >> address >> group_id) {
-//         count = 0;
-//         file1.open("attendance.txt", ios::in);
-//         while (file1 >> t_id >> a_date >> a_month >> a_year) {
-//             if (emp_id == t_id && d <= a_date && m == a_month && y == a_year) {
-//                 count++;
-//             }
-//         }
-//         file1.close();
-//         cout << "\n " << emp_id << "\t\t" << count << "\t\t" << 30 - count;
-//     }
-//     file.close();
-//     cin.ignore();
-//     cin.get();
-// }
-
-
-
-
-// void admin::insert() {
-//     system("clear");
-//     fstream file;
-//     int emp_id, sal, group_id;
-//     string name, address;
-    
-//     cout << "\n\n\t\t\tInsert Record";
-//     cout << "\n\n\n Employee ID: ";
-//     cin >> emp_id;
-//     cout << "\n\n Employee Name: ";
-//     cin >> name;
-//     cout << "\n\n Employee Salary: ";
-//     cin >> sal;
-//     cout << "\n\n Employee Address: ";
-//     cin >> address;
-//     cout << "\n\n Employee Group ID: ";
-//     cin >> group_id;
-    
-//     file.open("emp.txt", ios::out | ios::app);
-//     file << emp_id << " " << name << " " << sal << " " << address << " " << group_id << "\n";
-//     file.close();
-    
-//     cout << "\n\n\n\t\t\tNew Record Inserted Successfully...";
-//     cin.ignore();
-//     cin.get();
-// }
-
-// void emp::display() {
-//     system("clear");
-//     fstream file;
-//     int emp_id, sal, group_id;
-//     string name, address;
-    
-//     cout << "\n\n\t\t\tDisplay Record";
-//     file.open("emp.txt", ios::in);
-//     if (!file) {
-//         cout << "\n\n File Opening Error...";
-//         cin.ignore();
-//         cin.get();
-//         return;
-//     }
-    
-//     while (file >> emp_id >> name >> sal >> address >> group_id) {
-//         cout << "\n\n Employee ID: " << emp_id;
-//         cout << "\n Employee Name: " << name;
-//         cout << "\n Employee Salary: " << sal;
-//         cout << "\n Employee Address: " << address;
-//         cout << "\n Employee Group ID: " << group_id;
-//         cout << "\n---------------------------";
-//     }
-    
-//     file.close();
-//     cin.ignore();
-//     cin.get();
-// }
-
-// void emp::search() {
-//     system("clear");
-//     fstream file;
-//     int emp_idd, emp_id, sal, group_id, found = 0;
-//     string name, address;
-    
-//     cout << "\n\n\t\t\tSearch Record";
-//     file.open("emp.txt", ios::in);
-//     if (!file) {
-//         cout << "\n\n File Opening Error...";
-//         cin.ignore();
-//         cin.get();
-//         return;
-//     }
-    
-//     cout << "\n\n Employee ID For Search: ";
-//     cin >> emp_idd;
-    
-//     while (file >> emp_id >> name >> sal >> address >> group_id) {
-//         if (emp_idd == emp_id) {
-//             system("clear");
-//             cout << "\n\n\t\t\tSearch Record";
-//             cout << "\n\n Employee ID: " << emp_id;
-//             cout << "\n Employee Name: " << name;
-//             cout << "\n Employee Salary: " << sal;
-//             cout << "\n Employee Address: " << address;
-//             cout << "\n Employee Group ID: " << group_id;
-//             found = 1;
-//         }
-//     }
-    
-//     file.close();
-//     if (!found)
-//         cout << "\n\n Employee ID Cannot Be Found...";
-//     cin.ignore();
-//     cin.get();
-// }
-
-// void admin::modify() {
-//     system("clear");
-//     fstream file, file1;
-//     int emp_id, sal, group_id, rest_id, found = 0;
-//     string name, address, name1, address1;
-    
-//     cout << "\n\n\t\t\tModify Record";
-//     cout << "\n\n Employee ID For Modify: ";
-//     cin >> rest_id;
-    
-//     file.open("emp.txt", ios::in);
-//     file1.open("temp.txt", ios::out);
-    
-//     if (!file) {
-//         cout << "\n\n File Opening Error...";
-//         cin.ignore();
-//         cin.get();
-//         return;
-//     }
-    
-//     while (file >> emp_id >> name >> sal >> address >> group_id) {
-//         if (rest_id == emp_id) {
-//             cout << "\n\n New Employee Name: ";
-//             cin >> name1;
-//             cout << "\n New Employee Salary: ";
-//             cin >> sal;
-//             cout << "\n New Employee Address: ";
-//             cin >> address1;
-//             cout << "\n New Employee Group ID: ";
-//             cin >> group_id;
-//             file1 << emp_id << " " << name1 << " " << sal << " " << address1 << " " << group_id << "\n";
-//             found = 1;
-//         } else {
-//             file1 << emp_id << " " << name << " " << sal << " " << address << " " << group_id << "\n";
-//         }
-//     }
-    
-//     file.close();
-//     file1.close();
-    
-//     remove("emp.txt");
-//     rename("temp.txt", "emp.txt");
-    
-//     if (found)
-//         cout << "\n\n\t\t\tRecord Modified Successfully...";
-//     else
-//         cout << "\n\n Employee ID Cannot Be Found...";
-//     cin.ignore();
-//     cin.get();
-// }
-
-// void admin::del() {
-//     system("clear");
-//     fstream file, file1;
-//     int emp_id, sal, group_id, rest_id, found = 0;
-//     string name, address;
-    
-//     cout << "\n\n\t\t\tDelete Record";
-//     cout << "\n\n Employee ID For Delete: ";
-//     cin >> rest_id;
-    
-//     file.open("emp.txt", ios::in);
-//     file1.open("temp.txt", ios::out);
-    
-//     if (!file) {
-//         cout << "\n\n File Opening Error...";
-//         cin.ignore();
-//         cin.get();
-//         return;
-//     }
-    
-//     while (file >> emp_id >> name >> sal >> address >> group_id) {
-//         if (rest_id != emp_id) {
-//             file1 << emp_id << " " << name << " " << sal << " " << address << " " << group_id << "\n";
-//         } else {
-//             found = 1;
-//         }
-//     }
-    
-//     file.close();
-//     file1.close();
-    
-//     remove("emp.txt");
-//     rename("temp.txt", "emp.txt");
-    
-//     if (found)
-//         cout << "\n\n\t\t\tRecord Deleted Successfully...";
-//     else
-//         cout << "\n\n Employee ID Cannot Be Found...";
-//     cin.ignore();
-//     cin.get();
-// }
-
-// void emp::group() {
-//     cout << "Group Record\n";
-//     cin.ignore();
-//     cin.get();
-// }
-
-// void admin::search_group() {
-//     cout << "Search Group\n";
-//     cin.ignore();
-//     cin.get();
-// }
-
-// void admin::show_group() {
-//     cout << "Show Group\n";
-//     cin.ignore();
-//     cin.get();
-// }
-
-// void emp::check_attendance() {
-//     system("clear");
-//     fstream file, file1;
-//     int d, m, y, a_date, a_month, a_year, t_id, emp_id, sal, group_id, count = 0;
-//     string name, address;
-    
-//     cout << "\n\n\t\tCheck Employee Attendance";
-//     file.open("emp.txt", ios::in);
-//     file1.open("attendance.txt", ios::in);
-    
-//     if (!file || !file1) {
-//         cout << "\n\n File Opening Error...";
-//         cin.ignore();
-//         cin.get();
-//         return;
-//     }
-    
-//     cout << "\n\n Date: ";
-//     cin >> d;
-//     cout << "\n Month: ";
-//     cin >> m;
-//     cout << "\n Year: ";
-//     cin >> y;
-    
-//     file1.close();
-//     system("clear");
-//     cout << "\n\n\t\tCheck Employee Attendance";
-//     cout << "\n\n Employee ID\tPresent\tAbsents";
-    
-//     while (file >> emp_id >> name >> sal >> address >> group_id) {
-//         count = 0;
-//         file1.open("attendance.txt", ios::in);
-//         while (file1 >> t_id >> a_date >> a_month >> a_year) {
-//             if (emp_id == t_id && d <= a_date && m == a_month && y == a_year) {
-//                 count++;
-//             }
-//         }
-//         file1.close();
-//         cout << "\n " << emp_id << "\t\t" << count << "\t\t" << 30 - count;
-//     }
-//     file.close();
-//     cin.ignore();
-//     cin.get();
-// }
-
-// void admin::search_attendance() {
-//     system("clear");
-//     fstream file, file1;
-//     int emp_idd, d, m, y, a_date, a_month, a_year, t_id, count = 0;
-    
-//     cout << "\n\n\t\tSearch Employee Attendance";
-//     file.open("emp.txt", ios::in);
-//     file1.open("attendance.txt", ios::in);
-    
-//     if (!file || !file1) {
-//         cout << "\n\n File Opening Error...";
-//         cin.ignore();
-//         cin.get();
-//         return;
-//     }
-    
-//     cout << "\n\n Employee ID: ";
-//     cin >> emp_idd;
-//     cout << "\n\n Date: ";
-//     cin >> d;
-//     cout << "\n Month: ";
-//     cin >> m;
-//     cout << "\n Year: ";
-//     cin >> y;
-    
-//     file.close();
-//     system("clear");
-//     cout << "\n\n\t\tCheck Employee Attendance";
-    
-//     while (file1 >> t_id >> a_date >> a_month >> a_year) {
-//         if (emp_idd == t_id && d <= a_date && m == a_month && y == a_year) {
-//             count++;
-//         }
-//     }
-//     file1.close();
-    
-//     if (count > 0) {
-//         cout << "\n\n Employee ID\tPresent\tAbsents";
-//         cout << "\n " << emp_idd << "\t\t" << count << "\t\t" << 30 - count;
-//     } else {
-//         cout << "\n\n Employee ID Not Found...";
-//     }
-//     cin.ignore();
-//     cin.get();
-// }
-
-// void emp::salary_slip() {
-//     cout << "Salary Slip\n";
-//     cin.ignore();
-//     cin.get();
-// }
-
-
-
