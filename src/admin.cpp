@@ -34,8 +34,10 @@ void disableEcho(bool enable = true)
     tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 }
 
-void admin::login(){
-    while (true) {
+void admin::login()
+{
+    while (true)
+    {
         std::system("clear");
         disableEcho(false);
         string user, pass;
