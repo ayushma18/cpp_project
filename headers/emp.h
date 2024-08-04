@@ -144,7 +144,7 @@ public:
 
     void readFromFile()
     {
-        string fileName = "key/" + to_string(this->emp_id) + "public.key";
+        string fileName = "data/" + to_string(this->emp_id) + ".txt";
 
         if (!std::filesystem::exists(fileName))
         {
