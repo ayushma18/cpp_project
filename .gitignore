@@ -3,3 +3,6 @@
 *.o
 *.gch
 cryptopp
+output
+*.txt
+*.key
