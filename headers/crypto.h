@@ -4,7 +4,7 @@
 #include <cryptopp/rsa.h>
 #include <string>
 
-using namespace CryptoPP;
+using namespace CryptoPP; 
 using namespace std;
 
 void Save(const string& filename, const BufferedTransformation& bt);

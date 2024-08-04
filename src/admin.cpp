@@ -19,7 +19,7 @@ int extractNumberFromFilename(const std::string& filename) {
     return std::stoi(numberStr);
 }
 
-void disableEcho(bool enable = true) {
+void disableEcho(bool enable = false) {
     struct termios tty;
     tcgetattr(STDIN_FILENO, &tty);
     if (enable) {
@@ -31,6 +31,7 @@ void disableEcho(bool enable = true) {
 }
 
 void admin::login(){
+    disableEcho(false);
     while (true) {
         std::system("clear");
         string user, pass;

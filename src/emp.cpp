@@ -118,6 +118,7 @@ void emp::menu()
 
         case 3:
             emp::check_in();
+            
             break;
 
         case 5:
