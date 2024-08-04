@@ -157,21 +157,23 @@ void emp::check_in() {
     std::time_t current_time = std::chrono::system_clock::to_time_t(now);
     struct std::tm* timeinfo = std::localtime(&current_time);
     //actual
-    // if (timeinfo->tm_hour == 10 && timeinfo->tm_min >= 0 && timeinfo->tm_min <= 14) {
+    if (timeinfo->tm_hour == 10 && timeinfo->tm_min >= 0 && timeinfo->tm_min <= 14) {
+        in_office = true;
+        std::cout << "Checked In. Current time is between 10:00 AM and 10:15 AM.\n";
+    } else {
+        std::cout << "Not Checked In. Current time is not between 10:00 AM and 10:15 AM or after 5:00 PM.\n";
+    }
+
+    //for testing
+    // if (timeinfo->tm_hour < 13 ) {
     //     in_office = true;
+    //     writeToFile();
     //     std::cout << "Checked In. Current time is between 10:00 AM and 10:15 AM.\n";
     // } else {
     //     std::cout << "Not Checked In. Current time is not between 10:00 AM and 10:15 AM or after 5:00 PM.\n";
     // }
 
-    //for testing
-    if (timeinfo->tm_hour < 13 ) {
-        in_office = true;
-        writeToFile();
-        std::cout << "Checked In. Current time is between 10:00 AM and 10:15 AM.\n";
-    } else {
-        std::cout << "Not Checked In. Current time is not between 10:00 AM and 10:15 AM or after 5:00 PM.\n";
-    }
+
     std::cout << "Press any key to continue \n";
     fflush(stdin);
     std::cin.ignore();
@@ -184,42 +186,44 @@ void emp::check_out() {
     std::time_t current_time = std::chrono::system_clock::to_time_t(now);
     struct std::tm* timeinfo = std::localtime(&current_time);
     //actual
-    // if (timeinfo->tm_hour > 17 && in_office==true) {
-    //     in_office = false;
-    //      std::time_t t = std::time(nullptr);
-
-    //     // Convert it to local time
-    //     std::tm* localTime = std::localtime(&t);
-
-    //     // Extract month and day
-    //     int month = localTime->tm_mon + 1; // tm_mon is 0-based, so add 1
-    //     int day = localTime->tm_mday;
-    //     this->attendance[month - 1][day - 1] = true;
-    //     std::cout << "Attendance Recorded.\n";
-    // } else {
-    //     std::cout << "Attendance Not Recorded\n";
-    // }
-
-    //for testing
-    if (timeinfo->tm_hour > 10 && in_office==true) {
-
+    if (timeinfo->tm_hour > 17 && in_office==true) {
         in_office = false;
          std::time_t t = std::time(nullptr);
 
         // Convert it to local time
         std::tm* localTime = std::localtime(&t);
-        cout << "testtt" <<endl;
+
         // Extract month and day
         int month = localTime->tm_mon + 1; // tm_mon is 0-based, so add 1
         int day = localTime->tm_mday;
-        cout << month << day <<endl;
-        cout << attendance.size() << attendance[0].size()<<endl;
-        attendance[month-1][day-1] = 1;
+        this->attendance[month - 1][day - 1] = true;
         std::cout << "Attendance Recorded.\n";
-        writeToFile();
     } else {
         std::cout << "Attendance Not Recorded\n";
     }
+
+    //for testing
+    // if (timeinfo->tm_hour > 10 && in_office==true) {
+
+    //     in_office = false;
+    //      std::time_t t = std::time(nullptr);
+
+    //     // Convert it to local time
+    //     std::tm* localTime = std::localtime(&t);
+    //     cout << "testtt" <<endl;
+    //     // Extract month and day
+    //     int month = localTime->tm_mon + 1; // tm_mon is 0-based, so add 1
+    //     int day = localTime->tm_mday;
+    //     cout << month << day <<endl;
+    //     cout << attendance.size() << attendance[0].size()<<endl;
+    //     attendance[month-1][day-1] = 1;
+    //     std::cout << "Attendance Recorded.\n";
+    //     writeToFile();
+    // } else {
+    //     std::cout << "Attendance Not Recorded\n";
+    // }
+
+
     std::cout << "Press any key to continue \n";
     fflush(stdin);
     std::cin.ignore();
